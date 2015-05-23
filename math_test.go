@@ -6,6 +6,7 @@ import (
 	"math"
 	"testing"
 
+	"math/big"
 	"math/rand"
 
 	fixrand "chrispennello.com/go/util/fix/math/rand"
@@ -107,5 +108,37 @@ func TestAbs64(t *testing.T) {
 			continue
 		}
 		testAbs64(t, x)
+	}
+}
+
+func averageRef(x, y uint) uint {
+	// Initially tried using float64s, but they don't have enough precision!
+	xb := big.NewInt(0)
+	yb := big.NewInt(0)
+	sm := big.NewInt(0)
+	av := big.NewInt(0)
+	xb.SetUint64(uint64(x))
+	yb.SetUint64(uint64(y))
+	sm.Add(xb, yb)
+	av.Div(sm, big.NewInt(2))
+	return uint(av.Uint64())
+}
+
+func testAverage(t *testing.T, x, y uint) {
+	out := Average(x, y)
+	check := averageRef(x, y)
+	if out != check {
+		t.Errorf("Average(0x%x, 0x%x) != 0x%x (is 0x%x)", x, y, check, out)
+	}
+}
+
+func TestAverage(t *testing.T) {
+	testAverage(t, 1, 2)
+	testAverage(t, 150, 125)
+
+	for i := 0; i < 1000; i++ {
+		x := uint(fixrand.Uint64())
+		y := uint(fixrand.Uint64())
+		testAverage(t, x, y)
 	}
 }

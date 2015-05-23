@@ -1,6 +1,5 @@
 TODO
 ----
-- average of integers
 - bit reversal
 - divide rounding
 - integer min, max
