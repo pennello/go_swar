@@ -1,6 +1,5 @@
 TODO
 ----
-- bit reversal
 - divide rounding
 - integer min, max
 - integer selection
