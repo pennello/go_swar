@@ -49,7 +49,7 @@ func Average(x, y uint) uint {
 // DivCeil32 returns the ceiling of the quotient of a and b.
 //
 // Uses 64-bit integers.  We take the simple approach here and avoid
-// integer overflow by using twice as many bits are are necessary.
+// integer overflow by using twice as many bits as are necessary.
 //
 // Commentary from The Aggregate:
 //
@@ -65,7 +65,7 @@ func DivCeil32(a, b uint32) uint32 {
 // nearest integer.
 //
 // Uses 64-bit integers.  We take the simple approach here and avoid
-// integer overflow by using twice as many bits are are necessary.
+// integer overflow by using twice as many bits as are necessary.
 //
 // This trick also works if divide is implemented in less obvious ways,
 // such as shifts or shift-and-subtract sequences.
