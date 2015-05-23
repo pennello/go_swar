@@ -1,6 +1,5 @@
 TODO
 ----
-- absolute value of a float
 - ascii upper-, lower-case
 - average of integers
 - bit reversal
