@@ -1,6 +1,5 @@
 TODO
 ----
-- is power of 2
 - leading zero count
 - least significant 1 bit
 - log2 of an integer

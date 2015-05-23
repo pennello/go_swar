@@ -106,3 +106,12 @@ func Max32(x, y int32) int32 {
 	y64 := int64(y)
 	return int32(x64 - (((x64 - y64) >> (64 - 1)) & (x64 - y64)))
 }
+
+// IsPow2 returns whether x is a power of 2.
+//
+// Special case:
+//
+//	IsPow2(0) = 0
+func IsPow2(x uint) bool {
+	return x&(x-1) == 0
+}

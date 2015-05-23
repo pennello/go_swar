@@ -265,3 +265,74 @@ func TestMax32(t *testing.T) {
 		testMax32(t, int32(rand.Uint32()), int32(rand.Uint32()))
 	}
 }
+
+func isPow2Ref32(x uint32) bool {
+	if x == 0 {
+		return true
+	}
+	var place uint = 0
+	for ; place < 32; place++ {
+		if 1<<place == x {
+			return true
+		}
+	}
+	return false
+}
+
+func testIsPow232(t *testing.T, x uint32) {
+	out := IsPow2(uint(x))
+	check := isPow2Ref32(x)
+	if out != check {
+		t.Errorf("IsPow2(0x%x) != %v (is %v)", x, check, out)
+	}
+}
+
+func isPow2Ref64(x uint64) bool {
+	if x == 0 {
+		return true
+	}
+	var place uint = 0
+	for ; place < 64; place++ {
+		if 1<<place == x {
+			return true
+		}
+	}
+	return false
+}
+
+func testIsPow264(t *testing.T, x uint64) {
+	out := IsPow2(uint(x))
+	check := isPow2Ref64(x)
+	if out != check {
+		t.Errorf("IsPow2(0x%x) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestIsPow2(t *testing.T) {
+	testIsPow232(t, 0)
+	testIsPow232(t, 1)
+	testIsPow232(t, 2)
+	testIsPow232(t, 3)
+	testIsPow232(t, 4)
+	testIsPow232(t, 0x80000000)
+	testIsPow232(t, 0xffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testIsPow232(t, rand.Uint32())
+	}
+
+	testIsPow264(t, 0)
+	testIsPow264(t, 1)
+	testIsPow264(t, 2)
+	testIsPow264(t, 3)
+	testIsPow264(t, 4)
+	testIsPow264(t, 0x80000000)
+	testIsPow264(t, 0xffffffff)
+
+	testIsPow264(t, 0x8000000000000000)
+	testIsPow264(t, 0xffffffffffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testIsPow264(t, fixrand.Uint64())
+	}
+}
