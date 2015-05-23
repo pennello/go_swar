@@ -1,6 +1,5 @@
 TODO
 ----
-- integer selection
 - is power of 2
 - leading zero count
 - least significant 1 bit
