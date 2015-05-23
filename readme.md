@@ -1,6 +1,5 @@
 TODO
 ----
-- divide rounding
 - integer min, max
 - integer selection
 - is power of 2

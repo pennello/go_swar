@@ -9,6 +9,7 @@ import (
 	"math/big"
 	"math/rand"
 
+	fixmath "chrispennello.com/go/util/fix/math"
 	fixrand "chrispennello.com/go/util/fix/math/rand"
 )
 
@@ -140,5 +141,73 @@ func TestAverage(t *testing.T) {
 		x := uint(fixrand.Uint64())
 		y := uint(fixrand.Uint64())
 		testAverage(t, x, y)
+	}
+}
+
+func divCeil32Ref(a, b uint32) uint32 {
+	af := float64(a)
+	bf := float64(b)
+	return uint32(math.Ceil(af / bf))
+}
+
+func testDivCeil32(t *testing.T, a, b uint32) {
+	out := DivCeil32(a, b)
+	check := divCeil32Ref(a, b)
+	if out != check {
+		t.Errorf("DivCeil32(%v, %v) != %v (is %v)", a, b, check, out)
+	}
+}
+
+func TestDivCeil32(t *testing.T) {
+	testDivCeil32(t, 0, 1)
+	testDivCeil32(t, 1, 2)
+	testDivCeil32(t, 2, 2)
+	testDivCeil32(t, 3, 2)
+	testDivCeil32(t, 1, 3)
+	testDivCeil32(t, 2, 3)
+	testDivCeil32(t, 3, 3)
+	testDivCeil32(t, 4, 3)
+
+	for i := 0; i < 1000; i++ {
+		a := rand.Uint32()
+		b := rand.Uint32()
+		if b == 0 {
+			continue
+		}
+		testDivCeil32(t, a, b)
+	}
+}
+
+func divRoundNearest32Ref(a, b uint32) uint32 {
+	af := float64(a)
+	bf := float64(b)
+	return uint32(fixmath.Round(af / bf))
+}
+
+func testDivRoundNearest32(t *testing.T, a, b uint32) {
+	out := DivRoundNearest32(a, b)
+	check := divRoundNearest32Ref(a, b)
+	if out != check {
+		t.Errorf("DivRoundNearest32(%v, %v) != %v (is %v)", a, b, check, out)
+	}
+}
+
+func TestDivRoundNearest32(t *testing.T) {
+	testDivRoundNearest32(t, 0, 1)
+	testDivRoundNearest32(t, 1, 1)
+	testDivRoundNearest32(t, 2, 2)
+	testDivRoundNearest32(t, 3, 2)
+	testDivRoundNearest32(t, 1, 3)
+	testDivRoundNearest32(t, 2, 3)
+	testDivRoundNearest32(t, 3, 3)
+	testDivRoundNearest32(t, 4, 3)
+
+	for i := 0; i < 1000; i++ {
+		a := rand.Uint32()
+		b := rand.Uint32()
+		if b == 0 {
+			continue
+		}
+		testDivRoundNearest32(t, a, b)
 	}
 }
