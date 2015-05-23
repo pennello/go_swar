@@ -1,6 +1,5 @@
 TODO
 ----
-- ascii upper-, lower-case
 - average of integers
 - bit reversal
 - divide rounding
