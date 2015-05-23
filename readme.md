@@ -1,0 +1,18 @@
+TODO
+----
+- absolute value of a float
+- ascii upper-, lower-case
+- average of integers
+- bit reversal
+- divide rounding
+- integer min, max
+- integer selection
+- is power of 2
+- leading zero count
+- least significant 1 bit
+- log2 of an integer
+- most significant 1 bit
+- next largest power of 2
+- population count (ones count)
+- same within tolerance
+- trailing zero count
