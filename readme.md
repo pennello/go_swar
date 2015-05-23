@@ -1,6 +1,5 @@
 TODO
 ----
-- integer min, max
 - integer selection
 - is power of 2
 - leading zero count

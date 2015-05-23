@@ -211,3 +211,57 @@ func TestDivRoundNearest32(t *testing.T) {
 		testDivRoundNearest32(t, a, b)
 	}
 }
+
+func min32Ref(x, y int32) int32 {
+	if x < y {
+		return x
+	} else {
+		return y
+	}
+}
+
+func testMin32(t *testing.T, x, y int32) {
+	out := Min32(x, y)
+	check := min32Ref(x, y)
+	if out != check {
+		t.Errorf("Min32(%v, %v) != %v (is %v)", x, y, check, out)
+	}
+}
+
+func TestMin32(t *testing.T) {
+	testMin32(t, 1, 1)
+	testMin32(t, 1, 2)
+	testMin32(t, -1, -0x80000000)
+	testMin32(t, -0x7fffffff, 2)
+
+	for i := 0; i < 1000; i++ {
+		testMin32(t, int32(rand.Uint32()), int32(rand.Uint32()))
+	}
+}
+
+func max32Ref(x, y int32) int32 {
+	if x > y {
+		return x
+	} else {
+		return y
+	}
+}
+
+func testMax32(t *testing.T, x, y int32) {
+	out := Max32(x, y)
+	check := max32Ref(x, y)
+	if out != check {
+		t.Errorf("Max32(%v, %v) != %v (is %v)", x, y, check, out)
+	}
+}
+
+func TestMax32(t *testing.T) {
+	testMax32(t, 1, 1)
+	testMax32(t, 1, 2)
+	testMax32(t, -1, -0x80000000)
+	testMax32(t, -0x7fffffff, 2)
+
+	for i := 0; i < 1000; i++ {
+		testMax32(t, int32(rand.Uint32()), int32(rand.Uint32()))
+	}
+}

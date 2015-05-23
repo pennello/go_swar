@@ -74,3 +74,35 @@ func DivRoundNearest32(a, b uint32) uint32 {
 	b64 := uint64(b)
 	return uint32((a64 + (b64 / 2)) / b64)
 }
+
+// Min32 returns the minimum of x and y.
+//
+// Uses 64-bit integers.  We take the simple approach here and avoid
+// integer over- and underflow by using twice as many bits are are
+// necessary.
+//
+// Commentary from The Aggregate:
+//
+// Logically, this works because the shift by (WORDBITS-1) replicates
+// the sign bit to create a mask
+func Min32(x, y int32) int32 {
+	x64 := int64(x)
+	y64 := int64(y)
+	return int32(x64 + (((y64 - x64) >> (64 - 1)) & (y64 - x64)))
+}
+
+// Max32 returns the maximum of x and y.
+//
+// Uses 64-bit integers.  We take the simple approach here and avoid
+// integer over- and underflow by using twice as many bits are are
+// necessary.
+//
+// Commentary from The Aggregate:
+//
+// Logically, this works because the shift by (WORDBITS-1) replicates
+// the sign bit to create a mask
+func Max32(x, y int32) int32 {
+	x64 := int64(x)
+	y64 := int64(y)
+	return int32(x64 - (((x64 - y64) >> (64 - 1)) & (x64 - y64)))
+}
