@@ -127,3 +127,21 @@ func Lzc64(x uint64) uint64 {
 	x |= x >> 32
 	return 64 - Ones64(x)
 }
+
+// Tzc32 returns the trailing zero count of 32-bit x.
+//
+// This combines the technique from the least significant 1 bit with the
+// population count algorithm.
+func Tzc32(x uint32) uint32 {
+	// Compare with Ls1b.
+	return Ones32((x & -x) - 1)
+}
+
+// Tzc64 returns the trailing zero count of 64-bit x.
+//
+// This combines the technique from the least significant 1 bit with the
+// population count algorithm.
+func Tzc64(x uint64) uint64 {
+	// Compare with Ls1b.
+	return Ones64((x & -x) - 1)
+}
