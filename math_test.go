@@ -452,3 +452,135 @@ func TestSameWithinTolerance32(t *testing.T) {
 		testSameWithinTolerance32(t, a, b, c)
 	}
 }
+
+func log2Floor32Ref(x uint32) uint32 {
+	if x == 0 {
+		return 0
+	}
+	return uint32(math.Log2(float64(x)))
+}
+
+func testLog2Floor32(t *testing.T, x uint32) {
+	out := Log2Floor32(x)
+	check := log2Floor32Ref(x)
+	if out != check {
+		t.Errorf("Log2Floor32(0x%x) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestLog2Floor32(t *testing.T) {
+	testLog2Floor32(t, 0)
+	testLog2Floor32(t, 1)
+	testLog2Floor32(t, 2)
+	testLog2Floor32(t, 3)
+	testLog2Floor32(t, 4)
+	testLog2Floor32(t, 5)
+	testLog2Floor32(t, 0xffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testLog2Floor32(t, rand.Uint32())
+	}
+}
+
+func log2Floor64Ref(x uint64) uint64 {
+	if x == 0 {
+		return 0
+	}
+	return 64 - lzc64Ref(x) - 1
+}
+
+func testLog2Floor64(t *testing.T, x uint64) {
+	out := Log2Floor64(x)
+	check := log2Floor64Ref(x)
+	if out != check {
+		t.Errorf("Log2Floor64(0x%x) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestLog264Floor(t *testing.T) {
+	testLog2Floor64(t, 0)
+	testLog2Floor64(t, 1)
+	testLog2Floor64(t, 2)
+	testLog2Floor64(t, 3)
+	testLog2Floor64(t, 4)
+	testLog2Floor64(t, 5)
+	testLog2Floor64(t, 0xffffffff)
+
+	testLog2Floor64(t, 0xffffffffffffffff)
+	testLog2Floor64(t, 0xfffffffffffffffe)
+	testLog2Floor64(t, 0xffffffffffffffe)
+	testLog2Floor64(t, 0xfffffffffffffe)
+	testLog2Floor64(t, 0xffffffffffffe)
+	testLog2Floor64(t, 0xfffffffffffe)
+
+	for i := 0; i < 1000; i++ {
+		testLog2Floor64(t, fixrand.Uint64())
+	}
+}
+
+func log2Ceil32Ref(x uint32) uint32 {
+	if x == 0 {
+		return 0
+	}
+	return uint32(math.Ceil(math.Log2(float64(x))))
+}
+
+func testLog2Ceil32(t *testing.T, x uint32) {
+	out := Log2Ceil32(x)
+	check := log2Ceil32Ref(x)
+	if out != check {
+		t.Errorf("Log2Ceil32(0x%x) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestLog2Ceil32(t *testing.T) {
+	testLog2Ceil32(t, 0)
+	testLog2Ceil32(t, 1)
+	testLog2Ceil32(t, 2)
+	testLog2Ceil32(t, 3)
+	testLog2Ceil32(t, 4)
+	testLog2Ceil32(t, 5)
+	testLog2Ceil32(t, 6)
+	testLog2Ceil32(t, 7)
+	testLog2Ceil32(t, 0xffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testLog2Ceil32(t, rand.Uint32())
+	}
+}
+
+func log2Ceil64Ref(x uint64) uint64 {
+	if x == 0 {
+		return 0
+	}
+	r := 64 - lzc64Ref(x)
+	if isPow2Ref64(x) {
+		r--
+	}
+	return r
+}
+
+func testLog2Ceil64(t *testing.T, x uint64) {
+	out := Log2Ceil64(x)
+	check := log2Ceil64Ref(x)
+	if out != check {
+		t.Errorf("Log2Ceil64(0x%x) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestLog2Ceil64(t *testing.T) {
+	testLog2Ceil64(t, 0)
+	testLog2Ceil64(t, 1)
+	testLog2Ceil64(t, 2)
+	testLog2Ceil64(t, 3)
+	testLog2Ceil64(t, 4)
+	testLog2Ceil64(t, 5)
+	testLog2Ceil64(t, 6)
+	testLog2Ceil64(t, 7)
+	testLog2Ceil64(t, 8)
+	testLog2Ceil64(t, 0xffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testLog2Ceil64(t, fixrand.Uint64())
+	}
+}

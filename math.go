@@ -204,3 +204,115 @@ func SameWithinTolerance32(a, b, c int32) bool {
 	t64 := a64 - b64
 	return ((t64-c64)&(-t64-c64)>>(64-1))&1 == 1
 }
+
+// Log2Floor32 returns the floor of the base 2 logarithm of 32-bit x.
+//
+// Special case is:
+//
+//	Log2Floor32(0) = 0
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the floor of the base 2 log of that
+// number efficiently can be computed by the application of two
+// variable-precision SWAR algorithms. The first "folds" the upper bits
+// into the lower bits to construct a bit vector with the same most
+// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// is population count, defined elsewhere in this package.
+func Log2Floor32(x uint32) uint32 {
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	return Ones32(x >> 1)
+}
+
+// Log2Floor64 returns the floor of the base 2 logarithm of 64-bit x.
+//
+// Special case is:
+//
+//	Log2Floor64(0) = 0
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the floor of the base 2 log of that
+// number efficiently can be computed by the application of two
+// variable-precision SWAR algorithms. The first "folds" the upper bits
+// into the lower bits to construct a bit vector with the same most
+// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// is population count, defined elsewhere in this package.
+func Log2Floor64(x uint64) uint64 {
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	x |= x >> 32
+	return Ones64(x >> 1)
+}
+
+// Log2Ceil32 returns the ceiling of the base 2 logarithm of 32-bit x.
+//
+// Special case is:
+//
+//	Log2Ceil32(0) = 0
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the floor of the base 2 log of that
+// number efficiently can be computed by the application of two
+// variable-precision SWAR algorithms. The first "folds" the upper bits
+// into the lower bits to construct a bit vector with the same most
+// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// is population count, defined elsewhere in this package.
+//
+// Suppose instead that you want the ceiling of the base 2 log. The
+// floor and ceiling are identical if x is a power of two; otherwise,
+// the result is 1 too small. This can be corrected using the power of 2
+// test followed with the comparison-to-mask shift used in integer
+// minimum/maximum.
+func Log2Ceil32(x uint32) uint32 {
+	y := x & (x - 1) // Like IsPow2.
+	y |= -y
+	y >>= 32 - 1
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	return Ones32(x>>1) + y
+}
+
+// Log2Ceil64 returns the ceiling of the base 2 logarithm of 64-bit x.
+//
+// Special case is:
+//
+//	Log2Ceil64(0) = 0
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the floor of the base 2 log of that
+// number efficiently can be computed by the application of two
+// variable-precision SWAR algorithms. The first "folds" the upper bits
+// into the lower bits to construct a bit vector with the same most
+// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// is population count, defined elsewhere in this package.
+//
+// Suppose instead that you want the ceiling of the base 2 log. The
+// floor and ceiling are identical if x is a power of two; otherwise,
+// the result is 1 too small. This can be corrected using the power of 2
+// test followed with the comparison-to-mask shift used in integer
+// minimum/maximum.
+func Log2Ceil64(x uint64) uint64 {
+	y := x & (x - 1) // Like IsPow2.
+	y |= -y
+	y >>= 64 - 1
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	x |= x >> 32
+	return Ones64(x>>1) + y
+}
