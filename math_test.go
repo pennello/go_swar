@@ -419,3 +419,36 @@ func TestNlpo264(t *testing.T) {
 		testNlpo264(t, fixrand.Uint64())
 	}
 }
+
+func sameWithinTolerance32Ref(a, b, c int32) bool {
+	a64 := int64(a)
+	b64 := int64(b)
+	c64 := int64(c)
+
+	if a64 > b64 {
+		return a64-b64 < c64
+	} else {
+		return b64-a64 < c64
+	}
+}
+
+func testSameWithinTolerance32(t *testing.T, a, b, c int32) {
+	out := SameWithinTolerance32(a, b, c)
+	check := sameWithinTolerance32Ref(a, b, c)
+	if out != check {
+		t.Errorf("SameWithinTolerance32(%v, %v, %v) != %v (is %v)", a, b, c, check, out)
+	}
+}
+
+func TestSameWithinTolerance32(t *testing.T) {
+	testSameWithinTolerance32(t, 3, 2, 1)
+	testSameWithinTolerance32(t, 6, 5, 2)
+	testSameWithinTolerance32(t, 0, -0x80000000, 1)
+
+	for i := 0; i < 1000; i++ {
+		a := int32(rand.Uint32())
+		b := int32(rand.Uint32())
+		c := int32(rand.Uint32())
+		testSameWithinTolerance32(t, a, b, c)
+	}
+}

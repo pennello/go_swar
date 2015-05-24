@@ -160,3 +160,47 @@ func Nlpo264(x uint64) uint64 {
 	x |= x >> 32
 	return x + 1
 }
+
+// SameWithinTolerance32 determines if 32-bit integers a and b have the
+// same value within the given 32-bit tolerance c.
+//
+// Uses 64-bit integers.  We take the simple approach here and avoid
+// integer over- and underflow by using twice as many bits are are
+// necessary.
+//
+// Commentary from The Aggregate:
+//
+// The obvious test would be something like ((a>b)?(a-b):(b-a))<c, which
+// isn't horrifically inefficient, but does involve a conditional
+// branch. Alternatively, abs(a-b)<c would do... but again, it takes
+// some cleverness to implement abs() without a conditional jump. Here's
+// a branchless alternative.
+//
+// If (a-b)>0, then (b-a)<0; similarly, if (a-b)<0, then (b-a)>0. Both
+// can't be greater than 0 simultaneously. Suppose that (a-b)>0.
+// Subtracting ((a-b)-c) will produce a negative result iff a and b are
+// within c of each other. Of course, our assumption requires (b-a)<0,
+// so ((b-a)-c) simply becomes more negative (assuming the value doesn't
+// wrap around). Generalizing, if either ((a-b)-c)>0 or ((b-a)-c)>0 then
+// the values of a and b are not the same within tolerance c. In other
+// words, they are within tolerance if:
+//
+//	(((a-b-c)&(b-a-c))<0)
+//
+// This test can be rewritten a variety of ways. The <0 part is really
+// just examining the sign bit, so a mask or shift could be used to
+// extract the bit value instead. For example, using 32-bit words,
+// (((a-b-c)&(b-a-c))>>31) using unsigned >> will produce the value 1
+// for true or 0 for false. It is also possible to factor-out t=a-b,
+// giving:
+//
+//	(((t-c)&(-t-c))<0)
+//
+// Which is really equivalent to abs(t)<c.
+func SameWithinTolerance32(a, b, c int32) bool {
+	a64 := int64(a)
+	b64 := int64(b)
+	c64 := int64(c)
+	t64 := a64 - b64
+	return ((t64-c64)&(-t64-c64)>>(64-1))&1 == 1
+}
