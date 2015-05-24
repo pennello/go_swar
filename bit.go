@@ -47,11 +47,11 @@ func Ls1b(x uint) uint {
 // complement of the "folded" value shifted down by one yields the most
 // significant bit.
 func Ms1b32(x uint32) uint32 {
-	x |= (x >> 1)
-	x |= (x >> 2)
-	x |= (x >> 4)
-	x |= (x >> 8)
-	x |= (x >> 16)
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
 	return x & ^(x >> 1)
 }
 
@@ -67,11 +67,11 @@ func Ms1b32(x uint32) uint32 {
 // complement of the "folded" value shifted down by one yields the most
 // significant bit.
 func Ms1b64(x uint64) uint64 {
-	x |= (x >> 1)
-	x |= (x >> 2)
-	x |= (x >> 4)
-	x |= (x >> 8)
-	x |= (x >> 16)
-	x |= (x >> 32)
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	x |= x >> 32
 	return x & ^(x >> 1)
 }
