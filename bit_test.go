@@ -138,3 +138,69 @@ func TestLs1b(t *testing.T) {
 		testLs1b(t, uint(fixrand.Uint64()))
 	}
 }
+
+func ms1b32Ref(x uint32) uint32 {
+	if x == 0 {
+		return 0
+	}
+	var place uint = 32 - 1
+	for ; ; place-- {
+		b := uint32(1) << place
+		if b&x == b {
+			return b
+		}
+	}
+}
+
+func testMs1b32(t *testing.T, x uint32) {
+	out := Ms1b32(x)
+	check := ms1b32Ref(x)
+	if out != check {
+		t.Errorf("Ms1b32(%v) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestMs1b32(t *testing.T) {
+	testMs1b32(t, 0)
+	testMs1b32(t, 1)
+	testMs1b32(t, 2)
+	testMs1b32(t, 0xffffffff)
+	testMs1b32(t, 0x80000000)
+
+	for i := 0; i < 1000; i++ {
+		testMs1b32(t, rand.Uint32())
+	}
+}
+
+func ms1b64Ref(x uint64) uint64 {
+	if x == 0 {
+		return 0
+	}
+	var place uint = 64 - 1
+	for ; ; place-- {
+		b := uint64(1) << place
+		if b&x == b {
+			return b
+		}
+	}
+}
+
+func testMs1b64(t *testing.T, x uint64) {
+	out := Ms1b64(x)
+	check := ms1b64Ref(x)
+	if out != check {
+		t.Errorf("Ms1b64(%v) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestMs1b64(t *testing.T) {
+	testMs1b64(t, 0)
+	testMs1b64(t, 1)
+	testMs1b64(t, 2)
+	testMs1b64(t, 0xffffffff)
+	testMs1b64(t, 0x80000000)
+
+	for i := 0; i < 1000; i++ {
+		testMs1b64(t, fixrand.Uint64())
+	}
+}

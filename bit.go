@@ -34,3 +34,44 @@ func ReverseBits64(x uint64) uint64 {
 func Ls1b(x uint) uint {
 	return x & -x
 }
+
+// Ms1b computes the most significant 1 bit in 32-bit x.
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the most significant 1 bit (highest
+// numbered element of a bit set) can be computed using a SWAR algorithm
+// that recursively "folds" the upper bits into the lower bits.  This
+// process yields a bit vector with the same most significant 1 as x,
+// but all 1's below it.  Bitwise AND of the original value with the
+// complement of the "folded" value shifted down by one yields the most
+// significant bit.
+func Ms1b32(x uint32) uint32 {
+	x |= (x >> 1)
+	x |= (x >> 2)
+	x |= (x >> 4)
+	x |= (x >> 8)
+	x |= (x >> 16)
+	return x & ^(x >> 1)
+}
+
+// Ms1b computes the most significant 1 bit in 64-bit x.
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the most significant 1 bit (highest
+// numbered element of a bit set) can be computed using a SWAR algorithm
+// that recursively "folds" the upper bits into the lower bits.  This
+// process yields a bit vector with the same most significant 1 as x,
+// but all 1's below it.  Bitwise AND of the original value with the
+// complement of the "folded" value shifted down by one yields the most
+// significant bit.
+func Ms1b64(x uint64) uint64 {
+	x |= (x >> 1)
+	x |= (x >> 2)
+	x |= (x >> 4)
+	x |= (x >> 8)
+	x |= (x >> 16)
+	x |= (x >> 32)
+	return x & ^(x >> 1)
+}
