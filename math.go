@@ -170,33 +170,35 @@ func Nlpo264(x uint64) uint64 {
 //
 // Commentary from The Aggregate:
 //
-// The obvious test would be something like ((a>b)?(a-b):(b-a))<c, which
-// isn't horrifically inefficient, but does involve a conditional
-// branch. Alternatively, abs(a-b)<c would do... but again, it takes
-// some cleverness to implement abs() without a conditional jump. Here's
-// a branchless alternative.
+// The obvious test would be something like
+// (a > b) ? (a - b) : (b - a) < c, which isn't horrifically
+// inefficient, but does involve a conditional branch.  Alternatively,
+// abs(a-b) < c would do... but again, it takes some cleverness to
+// implement abs() without a conditional jump.  Here's a branchless
+// alternative.
 //
-// If (a-b)>0, then (b-a)<0; similarly, if (a-b)<0, then (b-a)>0. Both
-// can't be greater than 0 simultaneously. Suppose that (a-b)>0.
-// Subtracting ((a-b)-c) will produce a negative result iff a and b are
-// within c of each other. Of course, our assumption requires (b-a)<0,
-// so ((b-a)-c) simply becomes more negative (assuming the value doesn't
-// wrap around). Generalizing, if either ((a-b)-c)>0 or ((b-a)-c)>0 then
-// the values of a and b are not the same within tolerance c. In other
-// words, they are within tolerance if:
+// If a - b > 0, then b - a < 0; similarly, if a - b < 0, then
+// b - a > 0.  Both can't be greater than 0 simultaneously.  Suppose
+// that a - b > 0.  Subtracting (a - b) - c will produce a negative
+// result iff a and b are within c of each other.  Of course, our
+// assumption requires b - a < 0, so (b - a) - c simply becomes more
+// negative (assuming the value doesn't wrap around).  Generalizing, if
+// either (a - b) - c > 0 or (b - a) - c > 0 then the values of a and b
+// are not the same within tolerance c.  In other words, they are within
+// tolerance if:
 //
-//	(((a-b-c)&(b-a-c))<0)
+//	(a - b - c) & (b - a - c) < 0
 //
-// This test can be rewritten a variety of ways. The <0 part is really
+// This test can be rewritten a variety of ways.  The <0 part is really
 // just examining the sign bit, so a mask or shift could be used to
-// extract the bit value instead. For example, using 32-bit words,
+// extract the bit value instead.  For example, using 32-bit words,
 // (((a-b-c)&(b-a-c))>>31) using unsigned >> will produce the value 1
-// for true or 0 for false. It is also possible to factor-out t=a-b,
+// for true or 0 for false.  It is also possible to factor-out t=a-b,
 // giving:
 //
-//	(((t-c)&(-t-c))<0)
+//	(t - c) & (-t - c) < 0
 //
-// Which is really equivalent to abs(t)<c.
+// Which is really equivalent to abs(t) < c.
 func SameWithinTolerance32(a, b, c int32) bool {
 	a64 := int64(a)
 	b64 := int64(b)
@@ -215,9 +217,9 @@ func SameWithinTolerance32(a, b, c int32) bool {
 //
 // Given a binary integer value x, the floor of the base 2 log of that
 // number efficiently can be computed by the application of two
-// variable-precision SWAR algorithms. The first "folds" the upper bits
+// variable-precision SWAR algorithms.  The first "folds" the upper bits
 // into the lower bits to construct a bit vector with the same most
-// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// significant 1 as x, but all 1's below it.  The second SWAR algorithm
 // is population count, defined elsewhere in this package.
 func Log2Floor32(x uint32) uint32 {
 	x |= x >> 1
@@ -238,9 +240,9 @@ func Log2Floor32(x uint32) uint32 {
 //
 // Given a binary integer value x, the floor of the base 2 log of that
 // number efficiently can be computed by the application of two
-// variable-precision SWAR algorithms. The first "folds" the upper bits
+// variable-precision SWAR algorithms.  The first "folds" the upper bits
 // into the lower bits to construct a bit vector with the same most
-// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// significant 1 as x, but all 1's below it.  The second SWAR algorithm
 // is population count, defined elsewhere in this package.
 func Log2Floor64(x uint64) uint64 {
 	x |= x >> 1
@@ -262,15 +264,15 @@ func Log2Floor64(x uint64) uint64 {
 //
 // Given a binary integer value x, the floor of the base 2 log of that
 // number efficiently can be computed by the application of two
-// variable-precision SWAR algorithms. The first "folds" the upper bits
+// variable-precision SWAR algorithms.  The first "folds" the upper bits
 // into the lower bits to construct a bit vector with the same most
-// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// significant 1 as x, but all 1's below it.  The second SWAR algorithm
 // is population count, defined elsewhere in this package.
 //
-// Suppose instead that you want the ceiling of the base 2 log. The
+// Suppose instead that you want the ceiling of the base 2 log.  The
 // floor and ceiling are identical if x is a power of two; otherwise,
-// the result is 1 too small. This can be corrected using the power of 2
-// test followed with the comparison-to-mask shift used in integer
+// the result is 1 too small.  This can be corrected using the power of
+// 2 test followed with the comparison-to-mask shift used in integer
 // minimum/maximum.
 func Log2Ceil32(x uint32) uint32 {
 	y := x & (x - 1) // Like IsPow2.
@@ -294,15 +296,15 @@ func Log2Ceil32(x uint32) uint32 {
 //
 // Given a binary integer value x, the floor of the base 2 log of that
 // number efficiently can be computed by the application of two
-// variable-precision SWAR algorithms. The first "folds" the upper bits
+// variable-precision SWAR algorithms.  The first "folds" the upper bits
 // into the lower bits to construct a bit vector with the same most
-// significant 1 as x, but all 1's below it. The second SWAR algorithm
+// significant 1 as x, but all 1's below it.  The second SWAR algorithm
 // is population count, defined elsewhere in this package.
 //
-// Suppose instead that you want the ceiling of the base 2 log. The
+// Suppose instead that you want the ceiling of the base 2 log.  The
 // floor and ceiling are identical if x is a power of two; otherwise,
-// the result is 1 too small. This can be corrected using the power of 2
-// test followed with the comparison-to-mask shift used in integer
+// the result is 1 too small.  This can be corrected using the power of
+// 2 test followed with the comparison-to-mask shift used in integer
 // minimum/maximum.
 func Log2Ceil64(x uint64) uint64 {
 	y := x & (x - 1) // Like IsPow2.
