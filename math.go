@@ -115,3 +115,48 @@ func Max32(x, y int32) int32 {
 func IsPow2(x uint) bool {
 	return x&(x-1) == 0
 }
+
+// Nlpo232 returns the next largest power of 2 from 32-bit x.
+//
+// Special cases are:
+//
+//	Nlpo232(x) = 0 // where x has the high bit set
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the next largest power of 2 can be
+// computed by a SWAR algorithm that recursively "folds" the upper bits
+// into the lower bits.  This process yields a bit vector with the same
+// most significant 1 as x, but all 1's below it.  Adding 1 to that
+// value yields the next largest power of 2.
+func Nlpo232(x uint32) uint32 {
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	return x + 1
+}
+
+// Nlpo264 returns the next largest power of 2 from 64-bit x.
+//
+// Special cases are:
+//
+//	Nlpo264(x) = 0 // where x has the high bit set
+//
+// Commentary from The Aggregate:
+//
+// Given a binary integer value x, the next largest power of 2 can be
+// computed by a SWAR algorithm that recursively "folds" the upper bits
+// into the lower bits.  This process yields a bit vector with the same
+// most significant 1 as x, but all 1's below it.  Adding 1 to that
+// value yields the next largest power of 2.
+func Nlpo264(x uint64) uint64 {
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	x |= x >> 32
+	return x + 1
+}

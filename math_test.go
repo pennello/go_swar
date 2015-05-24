@@ -336,3 +336,86 @@ func TestIsPow2(t *testing.T) {
 		testIsPow264(t, fixrand.Uint64())
 	}
 }
+
+func nlpo232Ref(x uint32) uint32 {
+	high := uint32(1 << (32 - 1))
+	if x&high == high {
+		return 0
+	}
+	var place uint = 0
+	for ; ; place++ {
+		b := uint32(1) << place
+		if b > x {
+			return b
+		}
+	}
+}
+
+func testNlpo232(t *testing.T, x uint32) {
+	out := Nlpo232(x)
+	check := nlpo232Ref(x)
+	if out != check {
+		t.Errorf("Nlpo232(%v) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestNlpo232(t *testing.T) {
+	testNlpo232(t, 0)
+	testNlpo232(t, 1)
+	testNlpo232(t, 2)
+	testNlpo232(t, 3)
+	testNlpo232(t, 4)
+	testNlpo232(t, 5)
+	testNlpo232(t, 6)
+	testNlpo232(t, 7)
+	testNlpo232(t, 8)
+	testNlpo232(t, 0x80000000)
+	testNlpo232(t, 0xffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testNlpo232(t, rand.Uint32())
+	}
+}
+
+func nlpo264Ref(x uint64) uint64 {
+	high := uint64(1 << (64 - 1))
+	if x&high == high {
+		return 0
+	}
+	var place uint = 0
+	for ; ; place++ {
+		b := uint64(1) << place
+		if b > x {
+			return b
+		}
+	}
+}
+
+func testNlpo264(t *testing.T, x uint64) {
+	out := Nlpo264(x)
+	check := nlpo264Ref(x)
+	if out != check {
+		t.Errorf("Nlpo264(%v) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestNlpo264(t *testing.T) {
+	testNlpo264(t, 0)
+	testNlpo264(t, 1)
+	testNlpo264(t, 2)
+	testNlpo264(t, 3)
+	testNlpo264(t, 4)
+	testNlpo264(t, 5)
+	testNlpo264(t, 6)
+	testNlpo264(t, 7)
+	testNlpo264(t, 8)
+	testNlpo264(t, 0x80000000)
+	testNlpo264(t, 0xffffffff)
+
+	testNlpo264(t, 0x8000000000000000)
+	testNlpo264(t, 0xffffffffffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testNlpo264(t, fixrand.Uint64())
+	}
+}
