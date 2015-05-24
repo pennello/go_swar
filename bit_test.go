@@ -274,3 +274,93 @@ func TestOnes64(t *testing.T) {
 		testOnes64(t, fixrand.Uint64())
 	}
 }
+
+func lzc32Ref(x uint32) uint32 {
+	place := uint(32 - 1)
+	lz := uint32(0)
+	for {
+		b := uint32(1) << place
+		if b & ^x == b {
+			lz++
+		} else {
+			break
+		}
+		if place == 0 {
+			break
+		}
+		place--
+	}
+	return lz
+}
+
+func testLzc32(t *testing.T, x uint32) {
+	out := Lzc32(x)
+	check := lzc32Ref(x)
+	if out != check {
+		xs := strconv.FormatUint(uint64(x), 2)
+		t.Errorf("Lzc32(0b%v) != %v (is %v)", xs, check, out)
+	}
+}
+
+func TestLzc32(t *testing.T) {
+	testLzc32(t, 0)
+	testLzc32(t, 1)
+	testLzc32(t, 2)
+	testLzc32(t, 3)
+	testLzc32(t, 4)
+	testLzc32(t, 5)
+	testLzc32(t, 0xffffffff)
+	testLzc32(t, 0x80000000)
+	testLzc32(t, 0x8000)
+
+	for i := 0; i < 1000; i++ {
+		testLzc32(t, rand.Uint32())
+	}
+}
+
+func lzc64Ref(x uint64) uint64 {
+	place := uint(64 - 1)
+	lz := uint64(0)
+	for {
+		b := uint64(1) << place
+		if b & ^x == b {
+			lz++
+		} else {
+			break
+		}
+		if place == 0 {
+			break
+		}
+		place--
+	}
+	return lz
+}
+
+func testLzc64(t *testing.T, x uint64) {
+	out := Lzc64(x)
+	check := lzc64Ref(x)
+	if out != check {
+		xs := strconv.FormatUint(x, 2)
+		t.Errorf("Lzc64(0b%v) != %v (is %v)", xs, check, out)
+	}
+}
+
+func TestLzc64(t *testing.T) {
+	testLzc64(t, 0)
+	testLzc64(t, 1)
+	testLzc64(t, 2)
+	testLzc64(t, 3)
+	testLzc64(t, 4)
+	testLzc64(t, 5)
+	testLzc64(t, 0xffffffff)
+	testLzc64(t, 0x80000000)
+	testLzc64(t, 0x8000)
+
+	testLzc64(t, 0xffffffffffffffff)
+	testLzc64(t, 0x8000000000000000)
+	testLzc64(t, 0x80000000)
+
+	for i := 0; i < 1000; i++ {
+		testLzc64(t, fixrand.Uint64())
+	}
+}

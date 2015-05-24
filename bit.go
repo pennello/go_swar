@@ -106,3 +106,24 @@ func Ones64(x uint64) uint64 {
 	x = x&0x00000000ffffffff + ((x >> 32) & 0x00000000ffffffff)
 	return x
 }
+
+// Lzc32 returns the number of leading zeroes in 32-bit x.
+func Lzc32(x uint32) uint32 {
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	return 32 - Ones32(x)
+}
+
+// Lzc64 returns the number of leading zeroes in 64-bit x.
+func Lzc64(x uint64) uint64 {
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	x |= x >> 32
+	return 64 - Ones64(x)
+}
