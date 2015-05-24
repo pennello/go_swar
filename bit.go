@@ -35,7 +35,7 @@ func Ls1b(x uint) uint {
 	return x & -x
 }
 
-// Ms1b computes the most significant 1 bit in 32-bit x.
+// Ms1b extracts the most significant 1 bit from 32-bit x.
 //
 // Commentary from The Aggregate:
 //
@@ -55,7 +55,7 @@ func Ms1b32(x uint32) uint32 {
 	return x & ^(x >> 1)
 }
 
-// Ms1b computes the most significant 1 bit in 64-bit x.
+// Ms1b extracts the most significant 1 bit from 64-bit x.
 //
 // Commentary from The Aggregate:
 //
