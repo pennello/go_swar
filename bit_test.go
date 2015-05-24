@@ -103,8 +103,7 @@ func ls1bRef(x uint) uint {
 	if x == 0 {
 		return 0
 	}
-	place := uint(0)
-	for ; ; place++ {
+	for place := uint(0); ; place++ {
 		b := uint(1) << place
 		if b&x == b {
 			return b
@@ -143,8 +142,7 @@ func ms1b32Ref(x uint32) uint32 {
 	if x == 0 {
 		return 0
 	}
-	place := uint(32 - 1)
-	for ; ; place-- {
+	for place := uint(32 - 1); ; place-- {
 		b := uint32(1) << place
 		if b&x == b {
 			return b
@@ -176,8 +174,7 @@ func ms1b64Ref(x uint64) uint64 {
 	if x == 0 {
 		return 0
 	}
-	place := uint(64 - 1)
-	for ; ; place-- {
+	for place := uint(64 - 1); ; place-- {
 		b := uint64(1) << place
 		if b&x == b {
 			return b
@@ -206,9 +203,8 @@ func TestMs1b64(t *testing.T) {
 }
 
 func ones32Ref(x uint32) uint32 {
-	place := uint(0)
 	ones := uint32(0)
-	for ; place < 32; place++ {
+	for place := uint(0); place < 32; place++ {
 		b := uint32(1) << place
 		if x&b == b {
 			ones++
@@ -241,9 +237,8 @@ func TestOnes32(t *testing.T) {
 }
 
 func ones64Ref(x uint64) uint64 {
-	place := uint(0)
 	ones := uint64(0)
-	for ; place < 64; place++ {
+	for place := uint(0); place < 64; place++ {
 		b := uint64(1) << place
 		if x&b == b {
 			ones++

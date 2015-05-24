@@ -270,8 +270,7 @@ func isPow2Ref32(x uint32) bool {
 	if x == 0 {
 		return true
 	}
-	place := uint(0)
-	for ; place < 32; place++ {
+	for place := uint(0); place < 32; place++ {
 		if 1<<place == x {
 			return true
 		}
@@ -291,8 +290,7 @@ func isPow2Ref64(x uint64) bool {
 	if x == 0 {
 		return true
 	}
-	place := uint(0)
-	for ; place < 64; place++ {
+	for place := uint(0); place < 64; place++ {
 		if 1<<place == x {
 			return true
 		}
@@ -342,8 +340,7 @@ func nlpo232Ref(x uint32) uint32 {
 	if x&high == high {
 		return 0
 	}
-	place := uint(0)
-	for ; ; place++ {
+	for place := uint(0); ; place++ {
 		b := uint32(1) << place
 		if b > x {
 			return b
@@ -382,8 +379,7 @@ func nlpo264Ref(x uint64) uint64 {
 	if x&high == high {
 		return 0
 	}
-	place := uint(0)
-	for ; ; place++ {
+	for place := uint(0); ; place++ {
 		b := uint64(1) << place
 		if b > x {
 			return b
