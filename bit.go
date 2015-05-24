@@ -20,3 +20,17 @@ func ReverseBits64(x uint64) uint64 {
 	x = ((x & 0xffff0000ffff0000) >> 16) | ((x & 0x0000ffff0000ffff) << 16)
 	return (x >> 32) | (x << 32)
 }
+
+// Ls1b extracts the least significant 1 bit from x.
+//
+// Commentary from The Aggregate:
+//
+// This can be useful for extracting the lowest numbered element of a
+// bit set.  The reason this works is that it is equivalent to
+// (x & ((~x) + 1)); any trailing zero bits in x become ones in ~x,
+// adding 1 to that carries into the following bit, and AND with x
+// yields only the flipped bit... the original position of the least
+// significant 1 bit.
+func Ls1b(x uint) uint {
+	return x & -x
+}

@@ -98,3 +98,43 @@ func TestReverseBits64(t *testing.T) {
 		testReverseBits64(t, fixrand.Uint64())
 	}
 }
+
+func ls1bRef(x uint) uint {
+	if x == 0 {
+		return 0
+	}
+	var place uint = 0
+	for ; ; place++ {
+		b := uint(1) << place
+		if b&x == b {
+			return b
+		}
+	}
+}
+
+func testLs1b(t *testing.T, x uint) {
+	out := Ls1b(x)
+	check := ls1bRef(x)
+	if out != check {
+		t.Errorf("Ls1b(%v) != %v (is %v)", x, check, out)
+	}
+}
+
+func TestLs1b(t *testing.T) {
+	testLs1b(t, 0)
+	testLs1b(t, 1)
+	testLs1b(t, 2)
+	testLs1b(t, 0x80000000)
+	testLs1b(t, 0x80000001)
+	testLs1b(t, 0x80000010)
+	testLs1b(t, 0xffffffff)
+
+	testLs1b(t, 0x8000000000000000)
+	testLs1b(t, 0x8000000000000001)
+	testLs1b(t, 0x8000000000000010)
+	testLs1b(t, 0xffffffffffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testLs1b(t, uint(fixrand.Uint64()))
+	}
+}
