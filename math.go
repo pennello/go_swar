@@ -189,12 +189,12 @@ func Nlpo264(x uint64) uint64 {
 //
 //	(a - b - c) & (b - a - c) < 0
 //
-// This test can be rewritten a variety of ways.  The <0 part is really
+// This test can be rewritten a variety of ways.  The < 0 part is really
 // just examining the sign bit, so a mask or shift could be used to
 // extract the bit value instead.  For example, using 32-bit words,
-// (((a-b-c)&(b-a-c))>>31) using unsigned >> will produce the value 1
-// for true or 0 for false.  It is also possible to factor-out t=a-b,
-// giving:
+// (a - b - c) & (b - a - c) >> 31 using unsigned >> will produce the
+// value 1 for true or 0 for false.  It is also possible to factor-out
+// t = a - b, giving:
 //
 //	(t - c) & (-t - c) < 0
 //
