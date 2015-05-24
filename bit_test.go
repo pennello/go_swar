@@ -204,3 +204,73 @@ func TestMs1b64(t *testing.T) {
 		testMs1b64(t, fixrand.Uint64())
 	}
 }
+
+func ones32Ref(x uint32) uint32 {
+	var place uint = 0
+	var ones uint32
+	for ; place < 32; place++ {
+		b := uint32(1) << place
+		if x&b == b {
+			ones++
+		}
+	}
+	return ones
+}
+
+func testOnes32(t *testing.T, x uint32) {
+	out := Ones32(x)
+	check := ones32Ref(x)
+	if out != check {
+		xs := strconv.FormatUint(uint64(x), 2)
+		t.Errorf("Ones32(0b%v) != %v (is %v)", xs, check, out)
+	}
+}
+
+func TestOnes32(t *testing.T) {
+	testOnes32(t, 0)
+	testOnes32(t, 1)
+	testOnes32(t, 2)
+	testOnes32(t, 3)
+	testOnes32(t, 4)
+	testOnes32(t, 5)
+	testOnes32(t, 0xffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testOnes32(t, rand.Uint32())
+	}
+}
+
+func ones64Ref(x uint64) uint64 {
+	var place uint = 0
+	var ones uint64
+	for ; place < 64; place++ {
+		b := uint64(1) << place
+		if x&b == b {
+			ones++
+		}
+	}
+	return ones
+}
+
+func testOnes64(t *testing.T, x uint64) {
+	out := Ones64(x)
+	check := ones64Ref(x)
+	if out != check {
+		xs := strconv.FormatUint(x, 2)
+		t.Errorf("Ones64(0b%v) != %v (is %v)", xs, check, out)
+	}
+}
+
+func TestOnes64(t *testing.T) {
+	testOnes64(t, 0)
+	testOnes64(t, 1)
+	testOnes64(t, 2)
+	testOnes64(t, 3)
+	testOnes64(t, 4)
+	testOnes64(t, 5)
+	testOnes64(t, 0xffffffff)
+
+	for i := 0; i < 1000; i++ {
+		testOnes64(t, fixrand.Uint64())
+	}
+}
