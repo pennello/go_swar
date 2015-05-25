@@ -76,6 +76,33 @@ func Ms1b64(x uint64) uint64 {
 	return x & ^(x >> 1)
 }
 
+// Ones8 returns the number of 1 bits in 8-bit x.  This is also known
+// as the population count or Hamming weight.
+//
+// There are many possible implementations of this.  See more here:
+//
+// http://en.wikipedia.org/wiki/Hamming_weight#Efficient_implementation
+func Ones8(x uint8) uint8 {
+	x = x&0x55 + ((x >> 1) & 0x55)
+	x = x&0x33 + ((x >> 2) & 0x33)
+	x = x&0x0f + ((x >> 4) & 0x0f)
+	return x
+}
+
+// Ones16 returns the number of 1 bits in 16-bit x.  This is also known
+// as the population count or Hamming weight.
+//
+// There are many possible implementations of this.  See more here:
+//
+// http://en.wikipedia.org/wiki/Hamming_weight#Efficient_implementation
+func Ones16(x uint16) uint16 {
+	x = x&0x5555 + ((x >> 1) & 0x5555)
+	x = x&0x3333 + ((x >> 2) & 0x3333)
+	x = x&0x0f0f + ((x >> 4) & 0x0f0f)
+	x = x&0x00ff + ((x >> 8) & 0x00ff)
+	return x
+}
+
 // Ones32 returns the number of 1 bits in 32-bit x.  This is also known
 // as the population count or Hamming weight.
 //

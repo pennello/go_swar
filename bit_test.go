@@ -202,6 +202,74 @@ func TestMs1b64(t *testing.T) {
 	}
 }
 
+func ones8Ref(x uint8) uint8 {
+	ones := uint8(0)
+	for place := uint(0); place < 8; place++ {
+		b := uint8(1) << place
+		if x&b == b {
+			ones++
+		}
+	}
+	return ones
+}
+
+func testOnes8(t *testing.T, x uint8) {
+	out := Ones8(x)
+	check := ones8Ref(x)
+	if out != check {
+		xs := strconv.FormatUint(uint64(x), 2)
+		t.Errorf("Ones8(0b%v) != %v (is %v)", xs, check, out)
+	}
+}
+
+func TestOnes8(t *testing.T) {
+	testOnes8(t, 0)
+	testOnes8(t, 1)
+	testOnes8(t, 2)
+	testOnes8(t, 3)
+	testOnes8(t, 4)
+	testOnes8(t, 5)
+	testOnes8(t, 0xff)
+
+	for i := 0; i < 1000; i++ {
+		testOnes8(t, uint8(rand.Uint32()))
+	}
+}
+
+func ones16Ref(x uint16) uint16 {
+	ones := uint16(0)
+	for place := uint(0); place < 16; place++ {
+		b := uint16(1) << place
+		if x&b == b {
+			ones++
+		}
+	}
+	return ones
+}
+
+func testOnes16(t *testing.T, x uint16) {
+	out := Ones16(x)
+	check := ones16Ref(x)
+	if out != check {
+		xs := strconv.FormatUint(uint64(x), 2)
+		t.Errorf("Ones16(0b%v) != %v (is %v)", xs, check, out)
+	}
+}
+
+func TestOnes16(t *testing.T) {
+	testOnes16(t, 0)
+	testOnes16(t, 1)
+	testOnes16(t, 2)
+	testOnes16(t, 3)
+	testOnes16(t, 4)
+	testOnes16(t, 5)
+	testOnes16(t, 0xffff)
+
+	for i := 0; i < 1000; i++ {
+		testOnes16(t, uint16(rand.Uint32()))
+	}
+}
+
 func ones32Ref(x uint32) uint32 {
 	ones := uint32(0)
 	for place := uint(0); place < 32; place++ {
