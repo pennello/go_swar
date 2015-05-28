@@ -27,10 +27,10 @@ func ReverseBits64(x uint64) uint64 {
 //
 // This can be useful for extracting the lowest numbered element of a
 // bit set.  The reason this works is that it is equivalent to
-// (x & ((~x) + 1)); any trailing zero bits in x become ones in ~x,
-// adding 1 to that carries into the following bit, and AND with x
-// yields only the flipped bit... the original position of the least
-// significant 1 bit.
+// x & ((~x) + 1); any trailing zero bits in x become ones in ~x, adding
+// 1 to that carries into the following bit, and AND with x yields only
+// the flipped bit... the original position of the least significant 1
+// bit.
 func Ls1b(x uint) uint {
 	return x & -x
 }
