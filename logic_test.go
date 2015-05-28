@@ -11,9 +11,8 @@ import (
 func integerSelect32Ref(a, b, c, d int32) int32 {
 	if a < b {
 		return c
-	} else {
-		return d
 	}
+	return d
 }
 
 func testIntegerSelect32(t *testing.T, a, b, c, d int32) {

@@ -215,9 +215,8 @@ func TestDivRoundNearest32(t *testing.T) {
 func min32Ref(x, y int32) int32 {
 	if x < y {
 		return x
-	} else {
-		return y
 	}
+	return y
 }
 
 func testMin32(t *testing.T, x, y int32) {
@@ -242,9 +241,8 @@ func TestMin32(t *testing.T) {
 func max32Ref(x, y int32) int32 {
 	if x > y {
 		return x
-	} else {
-		return y
 	}
+	return y
 }
 
 func testMax32(t *testing.T, x, y int32) {
@@ -423,9 +421,8 @@ func sameWithinTolerance32Ref(a, b, c int32) bool {
 
 	if a64 > b64 {
 		return a64-b64 < c64
-	} else {
-		return b64-a64 < c64
 	}
+	return b64-a64 < c64
 }
 
 func testSameWithinTolerance32(t *testing.T, a, b, c int32) {
