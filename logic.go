@@ -12,7 +12,7 @@ package swar
 // Commentary from The Aggregate:
 //
 // Logically, this works because the shift by (WORDBITS-1) replicates
-// the sign bit to create a mask
+// the sign bit to create a mask.
 func IntegerSelect32(a, b, c, d int32) int32 {
 	a64 := int64(a)
 	b64 := int64(b)
