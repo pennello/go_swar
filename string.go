@@ -3,7 +3,8 @@
 package swar
 
 // AsciiUpper converts ASCII characters to their upper-case counterparts
-// in place.
+// in place.  Non-alphabetic characters are converted too, such as @ and
+// `.
 //
 // See:
 // https://blog.cloudflare.com/the-oldest-trick-in-the-ascii-book/
@@ -27,7 +28,8 @@ func AsciiUpper(s string) string {
 }
 
 // AsciiLower converts ASCII characters to their lower-case counterparts
-// in place.
+// in place.  Non-alphabetic characters are converted too, such as @ and
+// `.
 //
 // See:
 // https://blog.cloudflare.com/the-oldest-trick-in-the-ascii-book/
