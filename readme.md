@@ -7,7 +7,10 @@ Many of the algorithms are lovingly taken from The Aggregate's MAGIC
 Algorithms:
 http://aggregate.org/MAGIC/
 
-# [GoDoc Documentation](https://godoc.org/chrispennello.com/go/swar)
+Documentation
+-------------
+ - [GoDoc Documentation](https://godoc.org/chrispennello.com/go/swar)
 
-# Installation
+Installation
+------------
     go get chrispennello.com/go/swar
