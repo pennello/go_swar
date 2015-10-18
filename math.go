@@ -110,10 +110,6 @@ func Max32(x, y int32) int32 {
 }
 
 // IsPow2 returns whether x is a power of 2.
-//
-// Special case is:
-//
-//	IsPow2(0) = 0
 func IsPow2(x uint) bool {
 	return x&(x-1) == 0
 }
